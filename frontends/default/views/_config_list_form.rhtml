@@ -1,0 +1,43 @@
+<%
+columns = @available_columns
+href = url_for(params_for(:action => :update_table, :escape => false))
+-%>
+<%= form_remote_tag :url => href,
+                    :method => :post,
+                    :before => "addActiveScaffoldPageToHistory('#{href}', '#{params[:controller]}')",
+                    :after => "$('#{loading_indicator_id(:action => :config_list, :id => params[:id])}').style.visibility = 'visible'; Form.disable('#{controller_id}-config_list-form');",
+                    :complete => "$('#{loading_indicator_id(:action => :config_list, :id => params[:id])}').style.visibility = 'hidden'; Form.enable('#{controller_id}-config_list-form');",
+                    :failure => "ActiveScaffold.report_500_response('#{active_scaffold_id}')",
+                    :update => active_scaffold_content_id,
+                    :html => { :href => href, :id => "#{controller_id}-config_list-form", :class => 'config_list' } %>
+
+    <h4>Config list columns</h4>
+    <% columns.each do |c| %>
+      <ol class="form">
+        <li class="form-element">
+            <dl>
+                <dt>
+                   <label for="update_table_from"><%= c[ :label  ]%></label>
+                </dt>
+                <dd>
+                   <%= check_box_tag c[ :param_name ], 1, @columns.include?( c[ :name ] )%>
+                </dd>
+            </dl>  
+        </li>       
+    </ol>
+    <% end %>
+                    
+  <p class="form-footer">
+    <%= submit_tag as_('Ok'), :class => "submit" %>
+    <%= link_to as_('&nbsp;&nbsp;Reset to Default'), :commit => "reset_to_default" %>
+    <%= link_to as_('&nbsp;&nbsp;Show All Columns'), :commit => "show_all_columns" %>
+    <%= link_to as_('&nbsp;&nbsp;Cancel'), params_for(:action => 'list'), :class => 'cancel' %>
+    <%= loading_indicator_tag(:action => :config_list) %>
+  </p>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+  //Form.focusFirstElement('<%= "#{controller_id}-config_list-form" -%>');
+//]]>
+</script>
