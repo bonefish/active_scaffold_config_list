@@ -3,12 +3,11 @@ columns = @available_columns
 href = url_for(params_for(:action => :index, :escape => false))
 -%>
 <%= form_remote_tag :url => href,
-                    :method => :post,
+                    :method => :get,
                     :before => "addActiveScaffoldPageToHistory('#{href}', '#{params[:controller]}')",
                     :after => "$('#{loading_indicator_id(:action => :config_list, :id => params[:id])}').style.visibility = 'visible'; Form.disable('#{controller_id}-config_list-form');",
                     :complete => "$('#{loading_indicator_id(:action => :config_list, :id => params[:id])}').style.visibility = 'hidden'; Form.enable('#{controller_id}-config_list-form');",
                     :failure => "ActiveScaffold.report_500_response('#{active_scaffold_id}')",
-                    :update => active_scaffold_content_id,
                     :html => { :href => href, :id => "#{controller_id}-config_list-form", :class => 'config_list' } %>
 
     <h4>Config list columns</h4>
