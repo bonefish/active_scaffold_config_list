@@ -1,6 +1,6 @@
 <%
 columns = @available_columns
-href = url_for(params_for(:action => :update_table, :escape => false))
+href = url_for(params_for(:action => :index, :escape => false))
 -%>
 <%= form_remote_tag :url => href,
                     :method => :post,

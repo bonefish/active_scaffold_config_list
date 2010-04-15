@@ -19,6 +19,10 @@ module ActiveScaffold::Config
     end
     @@link = ActiveScaffold::DataStructures::ActionLink.new('prepare_config_list', :label => 'List columns..', :type => :table, :security_method => :create_authorized?)
 
+    # configures where the plugin itself is located. there is no instance version of this.
+    cattr_accessor :plugin_directory
+    @@plugin_directory = File.expand_path(__FILE__).match(/vendor\/plugins\/([^\/]*)/)[1]
+
     # instance-level configuration
     # ----------------------------
     # the label= method already exists in the Form base class

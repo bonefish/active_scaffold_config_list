@@ -1,18 +1,28 @@
 # Make sure that ActiveScaffold has already been included
 ActiveScaffold rescue throw "should have included ActiveScaffold plug in first.  Please make sure that this overwrite plugging comes alphabetically after the ActiveScaffold plug in"
 
-# set our directory
-$:.unshift(File.dirname(__FILE__))
-
 # Load our overrides
-Kernel::load 'lib/config/core.rb'
-Kernel::load 'lib/config/config_list.rb'
-Kernel::load 'lib/actions/config_list.rb'
-Kernel::load 'lib/helpers/view_helpers.rb'
+require "#{File.dirname(__FILE__)}/lib/active_scaffold/config/core.rb"
+require "#{File.dirname(__FILE__)}/lib/active_scaffold/config/config_list.rb"
+require "#{File.dirname(__FILE__)}/lib/active_scaffold/actions/config_list.rb"
+require "#{File.dirname(__FILE__)}/lib/active_scaffold/helpers/view_helpers_override.rb"
 
 ##
 ## Run the install script, too, just to make sure
+## But at least rescue the action in production
 ##
-require File.dirname(__FILE__) + '/install'
+begin
+  require File.dirname(__FILE__) + '/install'
+rescue
+  raise $! unless RAILS_ENV == 'production'
+end
 
-ActionView::Base.send(:include, ActiveScaffold::Helpers::ViewHelpers)
+# Add the actions as default actions.
+ActiveScaffold.set_defaults do |config|
+  [ :config_list
+    #add here registration for actions
+    
+    ].each do |action|
+    config.actions.add action
+  end
+end

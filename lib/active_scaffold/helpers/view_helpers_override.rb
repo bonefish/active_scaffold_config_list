@@ -1,6 +1,5 @@
-module ActiveScaffold
-  module Helpers
-    module ViewHelpers
+# Need to open the AS module carefully due to Rails 2.3 lazy loading
+ActiveScaffold::Helpers::ViewHelpers.module_eval do
       # Add the cf_as plugin includes
       def active_scaffold_includes_with_cf_as(frontend = :default)
         css = stylesheet_link_tag(ActiveScaffold::Config::Core.asset_path('cf_as-stylesheet.css', frontend))
@@ -21,6 +20,4 @@ module ActiveScaffold
 #        render_action_link_without_aal(link_copy, url_options)
 #      end
 #      alias_method_chain :render_action_link, :aal
-    end
-  end
 end

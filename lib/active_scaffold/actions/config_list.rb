@@ -8,34 +8,11 @@ module ActiveScaffold::Actions
                 
       base.before_filter :exclude_columns
       base.before_filter :exclude_config_list, :only => [:index, :list, :table]
-#start
-      as_config_list_plugin_path = File.join(RAILS_ROOT, 'vendor', 'plugins', as_config_list_plugin_name, 'frontends', 'default', 'views')
+
+      as_config_list_plugin_path = File.join(Rails.root, 'vendor', 'plugins', ActiveScaffold::Config::ConfigList.plugin_directory, 'frontends', 'default' , 'views')
       
-      if base.respond_to?(:generic_view_paths) && ! base.generic_view_paths.empty?
-        base.generic_view_paths.insert(0, as_config_list_plugin_path)
-      else  
-        config.inherited_view_paths << as_config_list_plugin_path
-      end
+      base.add_active_scaffold_path as_config_list_plugin_path
     end
-    def self.as_config_list_plugin_name
-      # extract the name of the plugin as installed
-      /.+vendor\/plugins\/(.+)\/lib/.match(__FILE__)
-      plugin_name = $1
-    end
-#--
-#    # configures where the active_scaffold_config_list plugin itself is located. there is no instance version of this.
-#    cattr_accessor :cl_as_plugin_directory
-#    @@cl_as_plugin_directory = File.expand_path(__FILE__).match(/vendor\/plugins\/([^\/]*)/)[1]
-#
-#    # the active_scaffold_aal template path
-#    def template_search_path_with_cl_as
-#      frontends_path = "../../vendor/plugins/#{ActiveScaffold::Config::Core.cl_as_plugin_directory}/frontends"
-#      search_path = template_search_path_without_cl_as
-#      search_path << "#{frontends_path}/#{frontend}/views" if frontend.to_sym != :default
-#      search_path << "#{frontends_path}/default/views"
-#      return search_path
-#    end
-#end
 
     def prepare_config_list
       @available_columns = active_scaffold_config.config_list.available_columns.map do |c| 
