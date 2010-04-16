@@ -1,4 +1,5 @@
 This works with Rails 2.3 and the rails-2.3 branch of ActiveScaffold.
+Clone or view the source at: http://github.com/bonefish/active_scaffold_config_list
 
 Usage:
 Enabled by default. To disable add the following to your controller:
@@ -16,3 +17,59 @@ If this is not defined then active_scaffold_config.list.columns is used.
 
 This is useful when you want the option to look at a potentially large number of columns but be able to 
 easily reset back to something that fits on the screen without horizontal scrolling.
+
+Original version: http://code.google.com/p/activescaffoldconfiglist/
+
+
+Overview
+
+A plugin for Active Scaffold that provides the ability to choose the column to show in the scaffold list at run-time
+Features
+
+The configuration data will be saved on the session.
+Installation
+
+To install the plugin:
+
+For active_scaffold 1.1.1
+
+./script/plugin install http://activescaffoldconfiglist.googlecode.com/svn/trunk/active_scaffold_config_list
+
+For active_scaffold 1.0
+
+./script/plugin install http://activescaffoldconfiglist.googlecode.com/svn/tags/for_as_1.0/active_scaffold_config_list
+
+Use
+
+This plugin automatically adds an action labeled 'List columns...' to every scaffold. Now you can show/hide the columns in the list.
+
+To define which are the default visible columns add this line to the active scaffold config section of your controller:
+
+config.config_list.default_columns = [:name, :description, ...]
+
+To exclude config list for a controller:
+
+config.config_list.enabled = false
+
+Suggestion
+
+Useful if used with acts_as_proxy plugin
+
+http://code.google.com/p/actsasproxy/
+
+Example: Model:
+
+class User < ActiveRecord::Base
+  has_one :address
+  proxies :address, :city, :state, :zip
+end
+
+Scaffold:
+
+config.list.columns = [:first_name,  :last_name, :address_city, :adress_state, :address_zip, ...]
+...
+config.config_list.default_columns = [:first_name, last_name]
+}}
+
+So you can have by default a minimal list and add columns at run-time
+
