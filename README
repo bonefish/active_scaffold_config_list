@@ -1,0 +1,18 @@
+This works with Rails 2.3 and the rails-2.3 branch of ActiveScaffold.
+
+Usage:
+Enabled by default. To disable add the following to your controller:
+active_scaffold :model do |config|
+  config.config_list.enabled = false
+end
+
+Enhancements:
+Two new options have been added: "Reset to Default" and "Show All Columns"
+
+You have the option of defining a default set of columns for the controller.
+e.g
+config.config_list.default_columns = [:name, :project, :amount]
+If this is not defined then active_scaffold_config.list.columns is used.
+
+This is useful when you want the option to look at a potentially large number of columns but be able to 
+easily reset back to something that fits on the screen without horizontal scrolling.
