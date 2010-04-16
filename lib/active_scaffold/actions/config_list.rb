@@ -2,10 +2,6 @@ module ActiveScaffold::Actions
   module ConfigList
     
     def self.included(base)
-      #base.verify :method => :post,
-      #            :only => :config_list,
-      #            :redirect_to => { :action => :index }
-                
       base.before_filter :exclude_columns
       base.before_filter :exclude_config_list, :only => [:index, :list, :table]
 
@@ -120,18 +116,12 @@ module ActiveScaffold::Actions
          end
       end
       
-      #hack for exports
-      ProgramAction.exportable_columns.each do |col|
-        if c.include? col.to_s
-          c << "exportable_column_values" unless c.include? "exportable_column_values"
-        end
-      end
-      
       if c.size > 0
         session[self.class.to_s + '_col'] = c       
       end
      
     end
+   
 
   end
 end
